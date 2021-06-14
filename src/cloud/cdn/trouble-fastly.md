@@ -39,6 +39,17 @@ Use the following list to identify and troubleshoot issues related to the Fastly
 
 -  **Geo-location/GeoIP does not work**— The default Magento Fastly VCL snippets append the country code to the URL. If the country code is not working, [upload the Fastly VCL]({{ site.baseurl }}/cloud/cdn/configure-fastly.html#upload-vcl-snippets) and recheck the site.
 
+custom VCL example:
+```
+set resp.http.client-geo-city = client.geo.city;
+set resp.http.client-geo-region =  client.geo.region;
+set resp.http.client-geo-continent = client.geo.continent_code;
+set resp.http.client-geo-country = client.geo.country_code;
+set resp.http.client-geo-latitude = client.geo.latitude;
+set resp.http.client-geo-longitude = client.geo.longitude;
+set resp.http.client-geo-zip-code = client.geo.postal_code;
+```
+
 -  **Pages are not caching**—By default, Fastly does not cache pages with the `Set-Cookies` header. Magento sets cookies even on cacheable pages (TTL > 0). The default Magento Fastly VCL strips those cookies on cacheable pages. If pages are not caching, [upload the Fastly VCL]({{ site.baseurl }}/cloud/cdn/configure-fastly.html#upload-vcl-snippets) and recheck the site.
 
    This issue can also occur if a page block in a template is marked uncacheable. In that case, the problem is most likely caused by a third-party module or Magento extension blocking or removing the Magento headers. To resolve the issue, see [X-Cache contains only MISS, no HIT](#xcache-miss).
